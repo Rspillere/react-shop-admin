@@ -9,7 +9,7 @@ import useAlert from '@hooks/useAlert';
 export default function Edit() {
   const [product, setProduct] = useState({});
   const router = useRouter();
-  const { alert, setAlert, toggleAlert } = useAlert();
+  const { alert, setAlert } = useAlert();
 
   useEffect(() => {
     const { id } = router.query;
@@ -23,7 +23,7 @@ export default function Edit() {
 
   return (
     <>
-      <Alert alert={alert} handleClose={toggleAlert} />
+      <Alert alert={alert} setAlert={setAlert} />
       <FormProduct product={product} setAlert={setAlert} />
     </>
   );

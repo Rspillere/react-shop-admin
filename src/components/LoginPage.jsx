@@ -2,6 +2,9 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@hooks/useAuth';
+import Link from 'next/link';
+import Alert from '@common/Alert';
+import useAlert from '@hooks/useAlert';
 
 export default function LoginPage() {
   const emailRef = useRef(null);
@@ -9,14 +12,26 @@ export default function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
 
+  const { alert, setAlert } = useAlert();
+
   const submitHandler = (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    auth.signIn(email, password).then(() => {
-      router.push('/dashboard');
-    });
+    auth
+      .signIn(email, password)
+      .then(() => {
+        router.push('/dashboard');
+      })
+      .catch(() => {
+        setAlert({
+          active: true,
+          message: 'Usuario o contraseña incorrecta',
+          type: 'error',
+          autoClose: false,
+        });
+      });
   };
   return (
     <>
@@ -26,6 +41,7 @@ export default function LoginPage() {
             <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
           </div>
+          <Alert alert={alert} setAlert={setAlert} />
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
@@ -70,9 +86,9 @@ export default function LoginPage() {
               </div>
 
               <div className="text-sm">
-                <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 

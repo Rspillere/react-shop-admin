@@ -1,6 +1,9 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-const Alert = ({ alert, handleClose }) => {
+const Alert = ({ alert, setAlert }) => {
+  const handleClose = () => {
+    setAlert(!alert.active);
+  };
   if (alert && alert?.autoClose) {
     setTimeout(() => {
       handleClose();

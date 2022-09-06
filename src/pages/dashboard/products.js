@@ -12,7 +12,7 @@ import { deleteProduct } from '@services/api/products';
 export default function Products() {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState([]);
-  const { alert, setAlert, toggleAlert } = useAlert();
+  const { alert, setAlert } = useAlert();
 
   useEffect(() => {
     async function getProducts() {
@@ -39,7 +39,7 @@ export default function Products() {
 
   return (
     <>
-      <Alert alert={alert} handleClose={toggleAlert} />
+      <Alert alert={alert} setAlert={setAlert} />
       <div className="lg:flex lg:items-center lg:justify-between mb-8">
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">List of Products</h2>

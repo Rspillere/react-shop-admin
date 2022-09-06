@@ -9,10 +9,12 @@ export function ProviderAuth({ children }) {
   const auth = useProvideAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
+
 //Permite exponer cierta información que se estará requiriendo
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+
 //Captar la información del usuario
 function useProvideAuth() {
   const [user, setUser] = useState(null);
@@ -24,12 +26,15 @@ function useProvideAuth() {
         'Content-Type': 'application/json',
       },
     };
-    const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
-    const token = access_token.access_token;
-    if (access_token) {
+    const {
+      data: { access_token: token },
+    } = await axios.post(endPoints.auth.login, { email, password }, options);
+
+    if (token) {
       Cookie.set('token', token, { expires: 5 });
 
       axios.defaults.headers.Authorization = `Bearer ${token}`;
+
       const { data: user } = await axios.get(endPoints.auth.profile);
       setUser(user);
     }
